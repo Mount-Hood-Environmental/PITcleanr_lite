@@ -1,10 +1,9 @@
 # Authors: Mike Ackerman
 #
-# Purpose: Start to explore the complete OTG dataset and begin
-# to roll up measurements into habitat reach metrics
+# Purpose: 
 #
-# Initially created: April 12, 2022
-#   Last Modified: April 21, 2022
+# Initially created: August 2, 2022
+#   Last Modified: 
 #
 # Notes:
 
