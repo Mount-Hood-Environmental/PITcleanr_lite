@@ -12,15 +12,16 @@
 rm(list = ls())
 
 #-----------------------------
-# load necessary libraries
+# install PITcleanr
 #-----------------------------
-library(tidyverse)
-library(sf)
-library(dplyr)
-library(elevatr)
-
 remotes::install_github("KevinSee/PITcleanr@develop",
                         build_vignettes = T,
                         force = T)
+library(PITcleanr)
+browseVignettes("PITcleanr")
 
-browseVignettes()
+#-----------------------------
+# load necessary libraries
+#-----------------------------
+
+
