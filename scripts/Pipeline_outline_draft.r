@@ -24,17 +24,17 @@ lapply(packages, require, character.only=TRUE)
 #-----------------------------
 # load required functions
 #-----------------------------
+source("R/addDirection.r")
 source("R/compress.r")
+source("R/buildNodeOrder.r")
 
 #-----------------------------
 # load data inputs
 #-----------------------------
 #Mark data
-mark = ldply(list.files('input/mark', pattern = '*tagging_detail.*\\.csv', full.names = T), read_csv) %>%
-  mutate(`Mark Date MMDDYYYY` = mdy(`Mark Date MMDDYYYY`))
+mark = ldply(list.files('input/mark', pattern = '*tagging_detail.*\\.csv', full.names = T), read_csv)
 
-recap = ldply(list.files('input/mark', pattern = '*recapture_detail.*\\.csv', full.names = T), read_csv) %>%
-  mutate(`Mark Date MMDDYYYY` = mdy(`Mark Date MMDDYYYY`))
+recap = ldply(list.files('input/mark', pattern = '*recapture_detail.*\\.csv', full.names = T), read_csv)
 
 #Observation data
 #biologis-obtained observations
@@ -82,34 +82,88 @@ mark_all = recap %>%
 #-----------------------------
 # Clean and join observation data
 #-----------------------------
-obs_pt = obs_pt %<>%
+
+obs_pt %<>%
   janitor::clean_names() %>%
-  mutate(tag_type = "Fish") %>%
-  select(-tag_type)
+  mutate(tag_type = ifelse(tag_code %in% test_tags$test_tags,
+                           "Test_Tag",
+                           "Fish"),
+         event_date_time_value = mdy_hms(event_date_time_value))
 
 obs_bl_test = obs_bl %>%
-  filter(tag %in% obs_pt$tag_code) %>% 
+  filter(tag %in% obs_pt$tag_code) %>%
   left_join(meta %>%
               select(reader,site_code, site_type, array_type), by = c("reader")) %>%
   rename(tag_code = tag,
-         `Event Date Time Value` = detected,
-         `Event Site Code Value` = reader,
-         `Antenna ID` = antenna,
-        ) %>%
-  mutate(`CTH Count` = 1) %>%
+         event_date_time_value = detected,
+         event_site_code_value = reader,
+         antenna_id = antenna) %>%
+  mutate(cth_count = 1,
+         event_type_name = "Observation",
+         antenna_group_configuration_value = 1,
+         event_site_type_description = "Instream Remote Detection System") %>%
+  janitor::clean_names() %>%
   left_join(obs_pt %>%
               select(tag_code, mark_species_name, mark_rear_type_name),
-            by = c("tag_code"))
-  # you'll need to add this column
-  mutate(`Event Type Name` = "Observation") %>%
-  janitor::clean_names() %>%
-  mutate(antenna_group_configuration_value = 1) %>% #This list is for test tags and defines each tag as Test_Tag or Fish
+            by = c("tag_code")) %>%
   mutate(tag_type = ifelse(tag_code %in% test_tags$test_tags,
                            "Test_Tag",
-                           "Fish"))
+                           "Fish")) %>%
+  select(-site, -site_code)
 
-obs_all =
+obs_all = obs_bl_test %>%
+  bind_rows(obs_pt) %>%
+  filter(tag_type == "Fish")
 
 #-----------------------------
-# Join site info
+# Create configuration for compress()
 #-----------------------------
+config = obs_all %>%
+  # first, for example, '16' '17' '18' are re-coded into a single node 'Upstream Array'
+  mutate(node = ifelse(event_site_code_value %in% c('16','17'),
+                       'SSR Entrance',NA),
+         node = ifelse(event_site_code_value %in% c('18'),
+                       'SSR Exit', node),
+         # so on with these 4
+         node = ifelse(event_site_code_value %in% c('01','02','03','04'),
+                       'Large HRSC', node),
+         node = ifelse(event_site_code_value %in% c('05','06','07','08','09','10','11','12'),
+                       'SSC Entrance', node),
+         node = ifelse(event_site_code_value %in% c('13','14','15'),
+                       'SSC Exit', node)) %>%
+  # need a column called "config_id"
+  mutate(config_id = 1) %>%
+  select(site_code = event_site_code_value,
+         antenna_id,
+         node,
+         config_id) %>%
+  distinct()
+
+#-----------------------------
+# compress()
+#-----------------------------
+
+obs_clean = compress(obs_all, ignore_event_vs_release = T, configuration = config, units = "secs") %>%
+  mutate(duration = str_replace_all(duration, "secs", ''),
+         travel_time = str_replace_all(travel_time, "secs", '')) %>%
+  mutate(duration_sec = as.double(duration),
+         travel_time_sec = as.double(travel_time)) %>%
+  mutate(residency_hr = travel_time_sec/3600) %>%
+  select(-duration, -travel_time)
+
+
+
+#-----------------------------
+# add directionality
+#-----------------------------
+parent_child <- tibble(parent = c("Upstream Array",
+                                  "Middle Array",
+                                  "Downstream Array")) %>%
+  mutate(child = lead(parent)) %>%
+  filter(!is.na(child))
+
+buildNodeOrder(parent_child)
+
+# this adds direction to each observation (forward/backward/etc.)
+direct_df = addDirection(obs_clean,
+                         parent_child)
