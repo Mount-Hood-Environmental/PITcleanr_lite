@@ -15,7 +15,7 @@ rm(list = ls())
 #-----------------------------
 #Code below automatically loads and/or installs required packages from CRAN
 options(repos=structure(c(cran="https://ftp.osuosl.org/pub/cran/")))  
-packages <- c("plyr","tidyverse","readxl", "lubridate","esquisse","readr","janitor") 
+packages <- c("plyr","tidyverse", "lubridate","esquisse","readr","janitor", "magrittr") 
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(packages, rownames(installed.packages())))  
 }  
@@ -32,22 +32,23 @@ source("R/buildNodeOrder.r")
 # load data inputs
 #-----------------------------
 #Mark data
-mark = ldply(list.files('input/mark', pattern = '*tagging_detail.*\\.csv', full.names = T), read_csv)
-
-recap = ldply(list.files('input/mark', pattern = '*recapture_detail.*\\.csv', full.names = T), read_csv)
+# mark = ldply(list.files('input/mark', pattern = '*tagging_detail.*\\.csv', full.names = T), read_csv)
+# 
+# recap = ldply(list.files('input/mark', pattern = '*recapture_detail.*\\.csv', full.names = T), read_csv)
 
 #Observation data
 #biologis-obtained observations
-obs_bl = ldply(list.files('input/observation', pattern = '^0LL_tag.*\\.csv', full.names = T), read_csv)
+obs_bl = ldply(list.files('input/biologic_data', pattern = '*biologic.*\\.csv', full.names = T), read_csv)
 
 #Ptagis-obtained observations
-obs_pt = ldply(list.files('input/observation', pattern = '^Lemhi_TagHist.*\\.csv', full.names = T), read_csv)
+obs_pt = ldply(list.files('input/PTAGIS_data', pattern = '*TagHist.*\\.csv', full.names = T), read_csv)
 
 #list of test tags
-test_tags = ldply(list.files('input/mark', pattern = '^test_tags.*\\.csv', full.names = T), read_csv)
+filter_tags = ldply(list.files('input/metadata', pattern = '*filter_tags.*\\.csv', full.names = T), read_csv)
 
 #read in site data
-meta = ldply(list.files('input/site', pattern = '^site_metadata.*\\.xlsx', full.names = T), read_excel)
+meta = ldply(list.files('input/metadata', pattern = '*site_metadata.*\\.csv', full.names = T), read_csv) %>%
+  mutate(reader = as.character(reader))
 
 
 #-----------------------------
@@ -85,7 +86,7 @@ mark_all = recap %>%
 
 obs_pt %<>%
   janitor::clean_names() %>%
-  mutate(tag_type = ifelse(tag_code %in% test_tags$test_tags,
+  mutate(tag_type = ifelse(tag_code %in% filter_tags$tag_num,
                            "Test_Tag",
                            "Fish"),
          event_date_time_value = mdy_hms(event_date_time_value))
@@ -104,9 +105,10 @@ obs_bl_test = obs_bl %>%
          event_site_type_description = "Instream Remote Detection System") %>%
   janitor::clean_names() %>%
   left_join(obs_pt %>%
-              select(tag_code, mark_species_name, mark_rear_type_name),
+              select(tag_code, mark_species_name, mark_rear_type_name) %>%
+              distinct(),
             by = c("tag_code")) %>%
-  mutate(tag_type = ifelse(tag_code %in% test_tags$test_tags,
+  mutate(tag_type = ifelse(tag_code %in% filter_tags$tag_num,
                            "Test_Tag",
                            "Fish")) %>%
   select(-site, -site_code)
@@ -130,7 +132,8 @@ config = obs_all %>%
          node = ifelse(event_site_code_value %in% c('05','06','07','08','09','10','11','12'),
                        'SSC Entrance', node),
          node = ifelse(event_site_code_value %in% c('13','14','15'),
-                       'SSC Exit', node)) %>%
+                       'SSC Exit', node),
+         node = ifelse(is.na(node), event_site_code_value, node)) %>%
   # need a column called "config_id"
   mutate(config_id = 1) %>%
   select(site_code = event_site_code_value,
@@ -152,7 +155,9 @@ obs_clean = compress(obs_all, ignore_event_vs_release = T, configuration = confi
   select(-duration, -travel_time)
 
 
-
+# Write out data
+#write_csv(obs_all, paste0('output/observations_all_', Sys.Date(), '.csv'))
+write_csv(obs_clean, paste0('output/observations_compressed_', Sys.Date(), '.csv'))
 #-----------------------------
 # add directionality
 #-----------------------------
