@@ -25,7 +25,6 @@ lapply(packages, require, character.only=TRUE)
 # load required functions
 #-----------------------------
 source("R/addDirection.r")
-source("R/compress.r")
 source("R/buildNodeOrder.r")
 source("R/readTagData.r")
 
@@ -35,7 +34,11 @@ source("R/readTagData.r")
 
 obs_all = readTagData()
 
+config = nodeConfig()
+
+obs_clean = compress2(obs_all, config)
 
 
-
-
+#-----------------------------
+# Add directionality
+#-----------------------------
