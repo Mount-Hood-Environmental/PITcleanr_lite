@@ -26,22 +26,27 @@ readTagData = function(ptagis_loc = 'input/PTAGIS_data',
   
   #Read in metadata
   #Site metadata
-  if(length(list.files(path = meta_loc, pattern = '*site_metadata.*\\.csv') > 0)){
+  site_meta_files = list.files(path = meta_loc, pattern = '*site_metadata.*\\.csv', full.names = T)
+  filtertag_files = list.files(meta_loc, pattern = '^filter_tags.*\\.csv', full.names = T)
+  ptagis_files = list.files(ptagis_loc, pattern = paste0('*',ptagis_name,'.*\\.csv'), full.names = T)
+  bl_files = list.files(biologic_loc, pattern = paste0('*',biologic_name,'.*\\.csv'), full.names = T)
+  
+  if(length(site_meta_files > 0)){
     
-    meta = ldply(list.files(meta_loc, pattern = '*site_metadata.*\\.csv', full.names = T), read_csv) %>%
+    meta = ldply(site_meta_files, read_csv) %>%
       mutate(reader = as.character(reader))
   }
   
   #Tags to filter out
-  if(length(list.files(path = meta_loc, pattern = '^filter_tags.*\\.csv') > 0)){
+  if(length(filtertag_files > 0)){
     
-    filter_tags = ldply(list.files(meta_loc, pattern = '^filter_tags.*\\.csv', full.names = T), read_csv)
+    filter_tags = ldply(filtertag_files, read_csv)
   }
   
   #Read in PTAGIS data
-  if(length(list.files(path = ptagis_loc, pattern = paste0('*',ptagis_name,'.*\\.csv')) > 0)){
+  if(length(ptagis_files > 0)){
     
-    obs_pt = ldply(list.files(ptagis_loc, pattern = paste0('*',ptagis_name,'.*\\.csv'), full.names = T), read_csv) %>%
+    obs_pt = ldply(ptagis_files, read_csv) %>%
     janitor::clean_names() %>%
     mutate(event_date_time_value = mdy_hms(event_date_time_value))
     
@@ -54,9 +59,9 @@ readTagData = function(ptagis_loc = 'input/PTAGIS_data',
   }
   
   #Read in Biologic data
-  if(length(list.files(path = biologic_loc, pattern = paste0('*',biologic_name,'.*\\.csv')) > 0)){
+  if(length(bl_files > 0)){
     
-    obs_bl = ldply(list.files(biologic_loc, pattern = paste0('*',biologic_name,'.*\\.csv'), full.names = T), read_csv) %>%
+    obs_bl = ldply(bl_files, read_csv) %>%
     filter(tag %in% obs_pt$tag_code) %>%
       left_join(meta %>%
                   select(reader,site_code, site_type, array_type), by = c("reader")) %>%
@@ -91,6 +96,10 @@ readTagData = function(ptagis_loc = 'input/PTAGIS_data',
     obs_all = obs_pt
     
   }
+  print(c("Files found and imported:",site_meta_files,
+          filtertag_files,
+          ptagis_files,
+          bl_files))
   
   return(obs_all)
 

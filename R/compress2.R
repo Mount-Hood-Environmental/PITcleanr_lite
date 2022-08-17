@@ -19,6 +19,8 @@ compress2 = function(tagdata = NULL,
                      config = NULL){
   
   source('R/compress.R')
+  source('R/readCTH.r')
+  source('R/qcTagHistory.r')
   
   out = compress(ptagis_file = tagdata, configuration = config, ignore_event_vs_release = T, units = "secs") %>%
     mutate(duration = str_replace_all(duration, "secs", ''),
