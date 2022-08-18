@@ -26,7 +26,6 @@ lapply(packages, require, character.only=TRUE)
 #-----------------------------
 source("R/addDirection2.r")
 source("R/compress2.r")
-source("R/buildNodeOrder.r")
 source("R/nodeConfig.r")
 source("R/readTagData.r")
 
@@ -48,3 +47,5 @@ write_csv(obs_clean, paste0('output/TagObs_compressed_', Sys.Date(),'.csv'))
 #-----------------------------
 
 obs_direct = addDirection2()
+
+write_csv(obs_direct,paste0('output/TagObs_Directionality_', Sys.Date(),'.csv') )
