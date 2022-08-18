@@ -24,7 +24,7 @@ lapply(packages, require, character.only=TRUE)
 #-----------------------------
 # load required functions
 #-----------------------------
-source("R/addDirection.r")
+source("R/addDirection2.r")
 source("R/compress2.r")
 source("R/buildNodeOrder.r")
 source("R/nodeConfig.r")
@@ -40,7 +40,11 @@ config = nodeConfig()
 
 obs_clean = compress2(obs_all, config)
 
+#Write out cleaned and compressed data
 write_csv(obs_clean, paste0('output/TagObs_compressed_', Sys.Date(),'.csv'))
+
 #-----------------------------
 # Add directionality
 #-----------------------------
+
+obs_direct = addDirection2()
