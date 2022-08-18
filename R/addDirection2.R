@@ -19,7 +19,7 @@
 
 
 addDirection2 = function(tagdata = obs_clean,
-                         node_loc = 'input/metadata',
+                         node_loc = 'input/metadata/',
                          filename = 'node_direction.csv'){
   
   source('R/addDirection.R')
@@ -27,7 +27,9 @@ addDirection2 = function(tagdata = obs_clean,
   source('R/buildPaths.R')
   source('R/listParents.R')
   
-  node_dat = read_csv(paste0(node_loc, '/', filename))
+  node_file = list.files(path = node_loc, pattern = 'node_direction.csv', full.names = T)
+  
+  node_dat = read_csv(node_file, show_col_types = F)
   
   parent_child = node_dat %>%
     mutate(child = lead(parent)) %>%
@@ -36,6 +38,8 @@ addDirection2 = function(tagdata = obs_clean,
   buildNodeOrder(parent_child)
   
   out = addDirection(tagdata, parent_child)
+  
+  print(c("Files found and imported:", node_file))
   
   return(out)
 }

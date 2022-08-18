@@ -24,6 +24,11 @@ readTagData = function(ptagis_loc = 'input/PTAGIS_data',
                        biologic_name = 'biologic',
                        meta_loc = 'input/metadata'){
   
+  read_csv_quiet = function(x){
+    out = read_csv(x, show_col_types = F)
+    
+  }
+  
   #Read in metadata
   #Site metadata
   site_meta_files = list.files(path = meta_loc, pattern = '*site_metadata.*\\.csv', full.names = T)
@@ -33,20 +38,20 @@ readTagData = function(ptagis_loc = 'input/PTAGIS_data',
   
   if(length(site_meta_files > 0)){
     
-    meta = ldply(site_meta_files, read_csv) %>%
+    meta = ldply(site_meta_files, read_csv_quiet) %>%
       mutate(reader = as.character(reader))
   }
   
   #Tags to filter out
   if(length(filtertag_files > 0)){
     
-    filter_tags = ldply(filtertag_files, read_csv)
+    filter_tags = ldply(filtertag_files, read_csv_quiet)
   }
   
   #Read in PTAGIS data
   if(length(ptagis_files > 0)){
     
-    obs_pt = ldply(ptagis_files, read_csv) %>%
+    obs_pt = ldply(ptagis_files, read_csv_quiet) %>%
     janitor::clean_names() %>%
     mutate(event_date_time_value = mdy_hms(event_date_time_value))
     
@@ -61,7 +66,7 @@ readTagData = function(ptagis_loc = 'input/PTAGIS_data',
   #Read in Biologic data
   if(length(bl_files > 0)){
     
-    obs_bl = ldply(bl_files, read_csv) %>%
+    obs_bl = ldply(bl_files, read_csv_quiet) %>%
     filter(tag %in% obs_pt$tag_code) %>%
       left_join(meta %>%
                   select(reader,site_code, site_type, array_type), by = c("reader")) %>%
@@ -96,7 +101,8 @@ readTagData = function(ptagis_loc = 'input/PTAGIS_data',
     obs_all = obs_pt
     
   }
-  print(c("Files found and imported:",site_meta_files,
+  print(c("Files found and imported:",
+          site_meta_files,
           filtertag_files,
           ptagis_files,
           bl_files))

@@ -20,9 +20,16 @@ nodeConfig = function(config_loc = 'input/metadata',
                         config_name = 'node_config',
                         tagdata = obs_all){
   
-  if(length(list.files(path = config_loc, pattern = paste0('*',config_name,'.*\\.csv')) > 0)){
+  read_csv_quiet = function(x){
+    out = read_csv(x, show_col_types = F)
     
-    node_dat = ldply(list.files(config_loc, pattern = paste0('*',config_name,'.*\\.csv'), full.names = T), read_csv)
+  }
+  
+  config_files = list.files(path = config_loc, pattern = paste0('*',config_name,'.*\\.csv'), full.names = T)
+  
+  if(length(config_files > 0)){
+    
+    node_dat = ldply(config_files, read_csv_quiet)
     
     config = tagdata %>%
       left_join(node_dat, by = c('event_site_code_value' = 'reader')) %>%
@@ -34,6 +41,7 @@ nodeConfig = function(config_loc = 'input/metadata',
              config_id) %>%
       distinct()
     
+    print(c("Files found and imported:", config_files))
     return(config)
   }
 }

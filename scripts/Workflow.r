@@ -40,7 +40,7 @@ config = nodeConfig()
 obs_clean = compress2(obs_all, config)
 
 #Write out cleaned and compressed data
-write_csv(obs_clean, paste0('output/TagObs_compressed_', Sys.Date(),'.csv'))
+write_csv(obs_clean, paste0('output/TagObs_Compressed_', Sys.Date(),'.csv'))
 
 #-----------------------------
 # Add directionality
