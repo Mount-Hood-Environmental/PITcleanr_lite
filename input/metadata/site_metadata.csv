@@ -1,17 +1,17 @@
 site_code,ptagis_code,site_name,site_type,reader,array_type,lat,lon,active,notes
-HYC,HYC,Hayden Creek Instream Array,array,NA,tandem,44.86160,-113.63200,TRUE,
-LRW,LRW,Lemhi River Weir,array,NA,tandem,44.86600,-113.62500,TRUE,
-SRSC1,NA,SRSC1,litz_cord,1,NA,44.87410,-113.62885,TRUE,Split River Ranch inlet
-SRSC1.1,NA,SRSC1.1,litz_cord,2,NA,44.87423,-113.62880,TRUE,Split River Ranch inlet
+HYC,HYC,Hayden Creek Instream Array,array,NA,tandem,44.8616,-113.632,TRUE,
+LRW,LRW,Lemhi River Weir,array,NA,tandem,44.866,-113.625,TRUE,
+SRSC1,NA,SRSC1,litz_cord,1,NA,44.8741,-113.62885,TRUE,Split River Ranch inlet
+SRSC1.1,NA,SRSC1.1,litz_cord,2,NA,44.87423,-113.6288,TRUE,Split River Ranch inlet
 SRSC2,NA,SRSC2,litz_cord,3,NA,44.87678,-113.62975,TRUE,Split River Ranch outlet
 HRSC1,NA,HRSC1,litz_cord,4,NA,44.89701,-113.62502,TRUE,Henry's Reach upper large side channel
-HRSC1.1,NA,HRSC1.1,litz_cord,5,NA,44.89710,-113.62515,TRUE,Henry's Reach upper large side channel
+HRSC1.1,NA,HRSC1.1,litz_cord,5,NA,44.8971,-113.62515,TRUE,Henry's Reach upper large side channel
 HRSC2,NA,HRSC2,litz_cord,6,NA,44.89739,-113.62496,TRUE,Henry's Reach upper LSC seasonal channel
 HRSC2.1,NA,HRSC2.1,litz_cord,7,NA,44.89745,-113.62509,TRUE,Henry's Reach upper LSC seasonal channel
 HRSC3,NA,HRSC3,litz_cord,8,NA,44.89898,-113.62636,TRUE,Henry's Reach lower small side channel complex inlet
-HRSC3.1,NA,HRSC3.1,litz_cord,9,NA,44.89912,-113.62630,TRUE,Henry's Reach lower small side channel complex inlet
+HRSC3.1,NA,HRSC3.1,litz_cord,9,NA,44.89912,-113.6263,TRUE,Henry's Reach lower small side channel complex inlet
 HRSC4,NA,HRSC4,litz_cord,10,NA,44.89909,-113.62674,TRUE,Henry's Reach lower small side channel complex inlet
-HRSC4.1,NA,HRSC4.1,litz_cord,11,NA,44.89920,-113.62662,TRUE,Henry's Reach lower small side channel complex inlet
+HRSC4.1,NA,HRSC4.1,litz_cord,11,NA,44.8992,-113.62662,TRUE,Henry's Reach lower small side channel complex inlet
 HRSC5,NA,HRSC5,litz_cord,12,NA,44.89917,-113.62718,TRUE,Henry's Reach lower small side channel complex inlet
 HRSC5.1,NA,HRSC5.1,litz_cord,13,NA,44.89933,-113.62733,TRUE,Henry's Reach lower small side channel complex inlet
 HRSC6.2,NA,HRSC6.2,litz_cord,14,NA,44.89989,-113.62796,TRUE,Henry's Reach lower small side channel complex outlet
@@ -21,11 +21,11 @@ HRSC7,NA,HRSC7,litz_cord,17,NA,44.89995,-113.62688,TRUE,Henry's Reach lower smal
 HRSC8,NA,HRSC8,litz_cord,18,NA,44.90022,-113.62657,TRUE,Henry's Reach lower small side channel complex outlet
 HRSC1-L,NA,HRSC-1,array,NA,single,44.89698,-113.62476,TRUE,"Henry's Reach upper mainstem array; Installed July 28, 2022"
 EVU,EVU,Eagle Valley Ranch - Upper,array,NA,tandem,45.09909,-113.72537,TRUE,Relocated approximately 100yds upstream in 2021 to be upstream of restoration work
-S2I,S2I,Lemhi Sub-Reach 2 SC Inlet,array,NA,single,45.10950,-113.74300,FALSE,Inactive; inflatable array
-S2O,S2O,Lemhi Sub-Reach 2 SC Outlet,array,NA,single,45.11130,-113.74600,FALSE,Inactive; inflatable array
-BHC,BHC,Bohannon Creek Lemhi R Basin,array,NA,tandem,45.11220,-113.74700,TRUE,
-S3B,S3B,Eagle Valley Ranch S3B,array,NA,single,45.11280,-113.75000,FALSE,"Inactive; inflatable array; decommissioned approximately February 21, 2022"
-S3A,S3A,Eagle Valley Ranch S3A,array,NA,single,45.11320,-113.75600,TRUE,Floater skid array
-EVL,EVL,Eagle Valley Ranch - Lower,array,NA,tandem,45.11510,-113.77400,TRUE,
+S2I,S2I,Lemhi Sub-Reach 2 SC Inlet,array,NA,single,45.1095,-113.743,FALSE,Inactive; inflatable array
+S2O,S2O,Lemhi Sub-Reach 2 SC Outlet,array,NA,single,45.1113,-113.746,FALSE,Inactive; inflatable array
+BHC,BHC,Bohannon Creek Lemhi R Basin,array,NA,tandem,45.1122,-113.747,TRUE,
+S3B,S3B,Eagle Valley Ranch S3B,array,NA,single,45.1128,-113.75,FALSE,"Inactive; inflatable array; decommissioned approximately February 21, 2022"
+S3A,S3A,Eagle Valley Ranch S3A,array,NA,single,45.1132,-113.756,TRUE,Floater skid array
+EVL,EVL,Eagle Valley Ranch - Lower,array,NA,tandem,45.1151,-113.774,TRUE,
 LLRTP,LLRTP,Lower Lemhi River Rotary Screw Trap,screw_trap,NA,NA,45.15954,-113.83305,TRUE,
-LLR,LLR,Lower Lemhi River,array,NA,tandem,45.17650,-113.88500,TRUE,
+LLR,LLR,Lower Lemhi River,array,NA,tandem,45.1765,-113.885,TRUE,

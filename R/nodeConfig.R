@@ -29,7 +29,8 @@ nodeConfig = function(config_loc = 'input/metadata',
   
   if(length(config_files > 0)){
     
-    node_dat = ldply(config_files, read_csv_quiet)
+    node_dat = ldply(config_files, read_csv_quiet) %>%
+      mutate(reader = as.character(reader))
     
     config = tagdata %>%
       left_join(node_dat, by = c('event_site_code_value' = 'reader')) %>%
