@@ -21,8 +21,9 @@
 addDirection2 = function(tagdata = obs_clean,
                          nodeDir_loc = 'input/metadata/',
                          filename = 'node_direction.csv',
+                         group_nodes = T,
                          build_diagram = T,
-                         build_map = T,
+                         generate_map = T,
                          downstream_site = "HYC",
                          dwnstrm_sites = T){
   
@@ -38,8 +39,17 @@ addDirection2 = function(tagdata = obs_clean,
   
   dir_dat = read_csv(nodeDir_file, show_col_types = F)
   
+  if(group_nodes == T){
+    dir_dat %<>%
+      select(parent_group, child_group) %>%
+      rename(parent = parent_group,
+             child = child_group) %>%
+      distinct()
+
+  }
   
-  if(build_diagram = T){
+  
+  if(build_diagram == T){
   #Output path diagram
   flow_dia = plotNodes(dir_dat)
   
@@ -50,7 +60,7 @@ addDirection2 = function(tagdata = obs_clean,
   dev.off()
   }
   
-  if(generate_map = T){
+  if(generate_map == T){
   #Obtaining geo points for all node locations
   source("R/queryPtagisMeta.R")
   source("R/queryInterrogationMeta.R")
@@ -94,7 +104,7 @@ addDirection2 = function(tagdata = obs_clean,
                    dwnstrm_sites = dwnstrm_sites,
                    dwn_min_stream_order_diff = 2)
   
-  flowlines = bind_rows(flow$flowlines,
+  flowlines = rbind(flow$flowlines,
                         flow$dwn_flowlines)
   
   
@@ -117,24 +127,25 @@ addDirection2 = function(tagdata = obs_clean,
                   aes(label = node),
                   size = 2) +
     theme_bw() +
-    theme(axis.title = element_blank()) +
+    theme(axis.title = element_blank(),
+          plot.margin=unit(c(1,1,1,1),'cm'))+
     labs(color = "Stream\nOrder")
   
   flowlines_plot
   
-  tiff(filename = paste0("output/figures/flowlines_plot_",Sys.Date(),'.tiff'), width = 5, height = 7, units = 'in')
+  tiff(filename = paste0("output/figures/flowlines_plot_",Sys.Date(),'.tiff'), res = 300, compression = 'lzw', width = 8, height = 8, units = 'in')
   flowlines_plot
   dev.off()
   }
   
-  buildNodeOrder(dir_dat, direction = 'd') %>%
-    distinct()
+
+  buildNodeOrder(dir_dat, direction = 'd')
   
   
   
-  out = addDirection(tagdata, parent_child)
+  out = addDirection(compress_obs = tagdata, parent_child = dir_dat)
   
-  print(c("Files found and imported:", node_file))
+  print(c("Files found and imported:", nodeDir_file))
   
   return(out)
 }

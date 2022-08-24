@@ -28,6 +28,7 @@ source("R/addDirection2.r")
 source("R/compress2.r")
 source("R/nodeConfig.r")
 source("R/readTagData.r")
+source("R/obsWide.r")
 
 #-----------------------------
 # Read in and compress data
@@ -50,24 +51,8 @@ write_csv(obs_wide, paste0('output/TagObs_Wide_',Sys.Date(),'.csv'))
 # Add directionality
 #-----------------------------
 
-obs_direct = addDirection2(build_diagram = F, generate_map = F)
+obs_direct = addDirection2(group_nodes = T, build_diagram = F, generate_map = F)
 
 write_csv(obs_direct,paste0('output/TagObs_Directionality_', Sys.Date(),'.csv') )
 
 #End of primary workflow
-
-
-#-----------------------------
-# Script below is in development
-#-----------------------------
-
-
-#Automating the directionality process -----
-
-
-
-#Creating parent-child relationships
-parent_child = buildParentChild(node_locs, flowlines, add_rkm = T)
-
-
-#Getting directionality
