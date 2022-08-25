@@ -51,7 +51,7 @@ write_csv(obs_wide, paste0('output/TagObs_Wide_',Sys.Date(),'.csv'))
 # Add directionality
 #-----------------------------
 
-obs_direct = addDirection2(group_nodes = T, build_diagram = F, generate_map = F)
+obs_direct = addDirection2(group_nodes = T, build_diagram = T, generate_map = F, downstream_site = "HYC", direction = 'd')
 
 write_csv(obs_direct,paste0('output/TagObs_Directionality_', Sys.Date(),'.csv') )
 
