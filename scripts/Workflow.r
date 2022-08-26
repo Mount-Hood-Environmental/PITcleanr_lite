@@ -24,7 +24,7 @@ lapply(packages, require, character.only=TRUE)
 #-----------------------------
 # load required functions
 #-----------------------------
-source("R/addDirection2.r")
+source("R/addDirectionWrap.r")
 source("R/compress2.r")
 source("R/nodeConfig.r")
 source("R/readTagData.r")
@@ -51,8 +51,20 @@ write_csv(obs_wide, paste0('output/TagObs_Wide_',Sys.Date(),'.csv'))
 # Add directionality
 #-----------------------------
 
-obs_direct = addDirection2(group_nodes = T, build_diagram = T, generate_map = F, downstream_site = "HYC", direction = 'd')
+obs_direct = addDirectionWrap(group_nodes = T, build_diagram = T, generate_map = F, downstream_site = "HYC", direction = 'd')
 
 write_csv(obs_direct,paste0('output/TagObs_Directionality_', Sys.Date(),'.csv') )
 
 #End of primary workflow
+
+
+#Get last detection for each tag to determine final paths
+
+lastobs_direct = obs_direct %>%
+  group_by(tag_code) %>%
+  slice_max(max_det) %>%
+  ungroup()
+
+ write_csv(lastobs_direct,
+  paste0('output/TagObs_FinalPaths_', Sys.Date(), '.csv'))
+  

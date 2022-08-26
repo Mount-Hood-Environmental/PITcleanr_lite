@@ -18,15 +18,15 @@
 
 
 
-addDirection2 = function(tagdata = obs_clean,
+addDirectionWrap = function(tagdata = obs_clean,
                          nodeDir_loc = 'input/metadata/',
-                         filename = 'node_direction.csv',
+                         direction_file = 'default',
                          group_nodes = T,
                          build_diagram = T,
                          generate_map = T,
                          downstream_site = NULL,
                          dwnstrm_sites = T,
-                         direction = NULL){
+                         direction = c('u','d')){
   
   source('R/addDirection.R')
   source('R/buildNodeOrder.R')
@@ -35,6 +35,7 @@ addDirection2 = function(tagdata = obs_clean,
   source('R/addParentChildNodes.R')
   source("R/buildNodeGraph.R")
   source("R/plotNodes.R")
+  
   
   nodeDir_file = list.files(path = nodeDir_loc, pattern = 'node_direction.csv', full.names = T)
   
@@ -117,11 +118,6 @@ addDirection2 = function(tagdata = obs_clean,
            height = 8,
            units = 'in',
            dpi = 300)
-           
-    # 
-    # tiff(filename = paste0("output/figures/flowlines_plot_",Sys.Date(),'.tiff'), res = 300, compression = 'lzw', width = 8, height = 8, units = 'in')
-    # flowlines_plot
-    # dev.off()
   }
   
   if(group_nodes == T){
@@ -136,7 +132,8 @@ addDirection2 = function(tagdata = obs_clean,
                                node_group = child_group)) %>%
                         distinct()
                   , by = 'node') %>%
-      mutate(node = ifelse(is.na(node_group), node, node_group))
+      mutate(node = ifelse(is.na(node_group), node, node_group)) %>%
+      select(-node_group)
       
     
     dir_dat %<>%
@@ -148,25 +145,82 @@ addDirection2 = function(tagdata = obs_clean,
   
   if(build_diagram == T){
   #Output path diagram
+    
+    if(direction == 'd'){
+      
+      flow_dia = plotNodes(dir_dat %>%
+                             rename(parent_new = child,
+                                    child = parent) %>%
+                             rename(parent = parent_new))
+      
+    } else {
   flow_dia = plotNodes(dir_dat)
-  
+    }
   ggsave(paste0('output/figures/Node_Diagram_', Sys.Date(),'.tiff'),
          flow_dia,
          width = 4,
          height = 4,
          units = 'in',
          dpi = 300)
-  
-  # tiff(filename = paste0('output/figures/Node_Diagram_', Sys.Date(),'.tiff'), width = 4, height = 4, units = 'in', res = 300, compression = 'lzw')
-  # flow_dia
-  # dev.off()
+
   }
   
-  buildNodeOrder(dir_dat, direction = direction)
+  if(direction_file == 'default'){
+    
+    buildNodeOrder(dir_dat, direction = direction)
+    
+    out = addDirection(compress_obs = tagdata, parent_child = dir_dat)
+    
+    
+  }
   
-  out = addDirection(compress_obs = tagdata, parent_child = dir_dat)
-  
-  print(c("Files found and imported:", nodeDir_file))
+  if(direction_file == 'hardcoded'){
+    
+    dir_hard = read_csv("input/metadata/node_direction_hardcoded.csv", show_col_types = F)
+    
+    # which observation locations are not in node_order?
+    dropped_locs = setdiff(tagdata$node, dir_hard$node)
+    
+    paste("Detections from the following nodes were dropped,
+        because they were not in the parent-child table:\n",
+          paste(dropped_locs, collapse = ", "), "\n") %>%
+      message()
+    
+    # filter out observations at sites not included in the node order
+    # determine direction of movement
+    out = tagdata %>%
+      left_join(dir_hard,
+                by = "node") %>%
+      #filter(!is.na(dir_hard)) %>%
+      arrange(tag_code, slot) %>%
+      group_by(tag_code) %>%
+      mutate(lead_dir_hard = lead(dir_hard),
+             lag_dir_hard = lag(dir_hard),
+             lag_node = lag(node),
+             lead_node = lead(node),
+             lead_path = lead(path),
+             lag_path = lag(path)) %>%
+      ungroup() %>%
+      rowwise() %>%
+      mutate(direction = if_else(dir_hard == 1 & is.na(lag_dir_hard),
+                                 "start",
+                                 if_else(dir_hard > lag_dir_hard &
+                                           (stringr::str_detect(path, paste0(" ", lag_node)) |
+                                              stringr::str_detect(path, paste0("^", lag_node))),
+                                         "forward",
+                                         if_else(dir_hard < lag_dir_hard &
+                                                   (stringr::str_detect(lag_path, paste0(" ", node)) |
+                                                      stringr::str_detect(lag_path, paste0("^", node))),
+                                                 "backward",
+                                                 if_else(node == lag_node,
+                                                         "no movement",
+                                                         "unknown"))))) %>%
+      ungroup() %>%
+      select(-starts_with(c("lead", "lag")))
+    
+  }
+
+  # print(c("Files found and imported:", nodeDir_file))
   
   return(out)
 }
