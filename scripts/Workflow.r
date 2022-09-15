@@ -34,7 +34,7 @@ source("R/obsWide.r")
 # Read in and compress data
 #-----------------------------
 
-obs_all = readTagData()
+obs_all = readTagData() # Suggested comment by BO:"This reads data in from the "PITcleaner_lite/input/PTAGIS_data" folder. Be sure this exists and contains the two necessary tag queries."
 
 config = nodeConfig()
 
