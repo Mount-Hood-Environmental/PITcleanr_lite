@@ -132,8 +132,12 @@ addDirectionWrap = function(tagdata = obs_clean,
                                node_group = child_group)) %>%
                         distinct()
                   , by = 'node') %>%
-      mutate(node = ifelse(is.na(node_group), node, node_group)) %>%
+      mutate(node_id = node,
+             node = ifelse(is.na(node_group), node, node_group)) %>%
+      #filter(!is.na(node_group)) %>%
+      #mutate(node = node_group) %>%
       select(-node_group)
+
       
     
     dir_dat %<>%
@@ -169,7 +173,13 @@ addDirectionWrap = function(tagdata = obs_clean,
     
     buildNodeOrder(dir_dat, direction = direction)
     
-    out = addDirection(compress_obs = tagdata, parent_child = dir_dat)
+    out = addDirection(compress_obs = tagdata, parent_child = dir_dat, direction = direction) %>%
+      mutate(path_len = str_length(path)) %>%
+      group_by(tag_code, node, slot) %>%
+      slice_max(max_det) %>%
+      slice_max(path_len) %>%
+      ungroup() %>%
+      select(-path_len)
     
     
   }

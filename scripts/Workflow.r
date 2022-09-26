@@ -61,9 +61,12 @@ write_csv(obs_direct,paste0('output/TagObs_Directionality_', Sys.Date(),'.csv') 
 #Get last detection for each tag to determine final paths
 
 lastobs_direct = obs_direct %>%
+  mutate(path.len = str_length(path)) %>%
   group_by(tag_code) %>%
   slice_max(max_det) %>%
-  ungroup()
+  slice_max(path.len) %>%
+  ungroup() %>%
+  select(-path.len)
 
  write_csv(lastobs_direct,
   paste0('output/TagObs_FinalPaths_', Sys.Date(), '.csv'))

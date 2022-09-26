@@ -4,7 +4,7 @@
 #' parent-child table, determines the direction of movement leading to
 #' each detection.
 #'
-#' @author Kevin See
+#' @author Kevin See, modified by Mark Roes in 2022
 #'
 #' @param compress_obs The result of `compress()`.
 #' @inheritParams buildPaths
@@ -15,12 +15,13 @@
 #' @examples addDirection()
 
 addDirection = function(compress_obs = NULL,
-                        parent_child = NULL) {
+                        parent_child = NULL,
+                        direction = c('u','d')) {
 
   stopifnot(!is.null(compress_obs),
             !is.null(parent_child))
 
-  node_order = try(buildNodeOrder(parent_child = parent_child))
+  node_order = try(buildNodeOrder(parent_child = parent_child, direction = direction))
 
   if(class(node_order)[1] == "try-error") {
     stop("Something went wrong building the node order")
