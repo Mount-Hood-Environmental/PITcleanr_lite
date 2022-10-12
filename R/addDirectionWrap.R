@@ -58,8 +58,11 @@ addDirectionWrap = function(tagdata = obs_clean,
     node_names = read_csv("input/metadata/node_config.csv", show_col_types = F)
     
     nodes_bl %<>%
-      mutate(reader = as.character(reader)) %>%
-      left_join(node_names, by = c("reader"))
+      mutate(reader_id = as.character(reader_id)) %>%
+      mutate(key = paste0(site_code, "_", reader_id)) %>%
+      left_join(node_names %>%
+                  mutate(key = paste0(site, "_", reader))
+                  , by = c("key"))
     
     #bind together and filter to detection sites
     node_locs = nodes_pt %>%

@@ -1,7 +1,7 @@
 site_code,ptagis_code,site_name,site_type,reader_id,array_type,lat,lon,active,notes
 HYC,HYC,Hayden Creek Instream Array,array,NA,tandem,44.8616,-113.632,TRUE,
 LRW,LRW,Lemhi River Weir,array,NA,tandem,44.866,-113.625,TRUE,
-0HR,NA,Henrys Ranch,array,NA,single,44.89698,-113.62476,TRUE,"Henry's Reach upper mainstem array; Installed July 28, 2022"
+0HR,NA,Henrys Ranch,array,1,single,44.89698,-113.62476,TRUE,"Henry's Reach upper mainstem array; Installed July 28, 2022"
 0LL,NA,SRSC1,litz_cord,1,NA,44.8741,-113.62885,TRUE,Split River Ranch inlet
 0LL,NA,SRSC1.1,litz_cord,2,NA,44.87423,-113.6288,TRUE,Split River Ranch inlet
 0LL,NA,SRSC2,litz_cord,3,NA,44.87678,-113.62975,TRUE,Split River Ranch outlet
