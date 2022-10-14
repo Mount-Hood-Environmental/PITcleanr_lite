@@ -54,24 +54,21 @@ addDirectionWrap = function(tagdata = obs_clean,
     nodes_pt = queryPtagisMeta()
     
     #Read in this data with the site metadata
-    nodes_bl = read_csv("input/metadata/site_metadata.csv", show_col_types = F)
+    node_meta = read_csv("input/metadata/site_metadata.csv", show_col_types = F)
     node_names = read_csv("input/metadata/node_config.csv", show_col_types = F)
     
-    nodes_bl %<>%
-      mutate(reader_id = as.character(reader_id)) %>%
-      mutate(key = paste0(site_code, "_", reader_id)) %>%
-      left_join(node_names %>%
-                  mutate(key = paste0(site, "_", reader))
-                  , by = c("key"))
+    nodes_bl = node_names %>%
+      left_join(node_meta, by = c('node' = 'site_name'))
     
     #bind together and filter to detection sites
     node_locs = nodes_pt %>%
-      mutate(node = site_code) %>%
-      rename(lat = latitude,
+      #mutate(node = site_code) %>%
+      rename(node = site_code,
+             lat = latitude,
              lon = longitude) %>%
       select(node, lat, lon) %>%
       bind_rows(nodes_bl %>%
-                  select(node, site_code, lat, lon)) %>%
+                  select(node, lat, lon)) %>%
       filter(node %in% obs_clean$node) %>%
       distinct() %>%
       group_by(node) %>%
@@ -82,7 +79,7 @@ addDirectionWrap = function(tagdata = obs_clean,
     #Building flowlines
     
     flow = node_locs %>%
-      mutate(site_code = node) %>%
+      rename(site_code = node) %>%
       queryFlowlines(root_site_code = downstream_site,
                      min_strm_order = 2,
                      dwnstrm_sites = dwnstrm_sites,
@@ -182,7 +179,12 @@ addDirectionWrap = function(tagdata = obs_clean,
       slice_max(max_det) %>%
       slice_max(path_len) %>%
       ungroup() %>%
-      select(-path_len)
+      select(-path_len) %>%
+      mutate(min_det_date = date(min_det),
+             min_det_time = format(min_det, "%H:%M:%S"),
+             max_det_date = date(max_det),
+             max_det_time = format(max_det, "%H:%M:%S")
+      )
     
     
   }

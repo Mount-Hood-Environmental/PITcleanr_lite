@@ -39,7 +39,7 @@ readTagData = function(ptagis_loc = 'input/PTAGIS_data',
   if(length(site_meta_files > 0)){
     
     meta = ldply(site_meta_files, read_csv_quiet) %>%
-      mutate(reader_id = as.character(reader_id))
+      mutate(reader = as.character(reader))
   }
   
   #Tags to filter out
@@ -65,18 +65,19 @@ readTagData = function(ptagis_loc = 'input/PTAGIS_data',
   
   #Read in Biologic data
   if(length(bl_files > 0)){
-    meta %<>%
-      mutate(key = paste0(site_code, "_", reader_id))
+    config = read_csv_quiet("input/metadata/node_config.csv") %>%
+      mutate(key = paste0(site, "_", reader))
     
     obs_bl = ldply(bl_files, read_csv_quiet) %>%
-      mutate(key = paste0(site, "_", reader)) %>%
+      mutate(key = paste0(site, "_", as.numeric(reader))) %>%
     filter(tag %in% obs_pt$tag_code) %>%
-      left_join(meta %>%
-                  select(reader_id ,site_code, site_type, array_type, key), by = c("key")) %>%
+      left_join(config %>%
+      select(node, key), by = c("key")) %>%
       rename(tag_code = tag,
              event_date_time_value = detected,
-             event_site_code_value = reader,
-             antenna_id = antenna) %>%
+             event_site_code_value = node,
+             #antenna_id = antenna
+             ) %>%
       mutate(cth_count = 1,
              event_type_name = "Observation",
              antenna_group_configuration_value = 1,
@@ -86,7 +87,7 @@ readTagData = function(ptagis_loc = 'input/PTAGIS_data',
                   select(tag_code, mark_species_name, mark_rear_type_name) %>%
                   distinct(),
                 by = c("tag_code")) %>%
-      select(-site, -site_code, -key)
+      select(-site)
     
     if(exists("filter_tags")){
       obs_bl %<>%

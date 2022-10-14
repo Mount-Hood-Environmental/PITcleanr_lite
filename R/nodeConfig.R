@@ -1,4 +1,4 @@
-#' @title create note configuration object
+#' @title create node configuration object
 #'
 #' @description The function creates a node configuration file for compress
 #'
@@ -30,10 +30,11 @@ nodeConfig = function(config_loc = 'input/metadata',
   if(length(config_files > 0)){
     
     node_dat = ldply(config_files, read_csv_quiet) %>%
-      mutate(reader = as.character(reader))
+      mutate(reader = as.character(reader)) %>%
+      mutate(key = paste0(site, '_', reader))
     
     config = tagdata %>%
-      left_join(node_dat, by = c('event_site_code_value' = 'reader')) %>%
+      left_join(node_dat, by = 'key') %>%
       mutate(node = ifelse(is.na(node), event_site_code_value, node),
              config_id = 1) %>%
       select(site_code = event_site_code_value,

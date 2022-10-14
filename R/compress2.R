@@ -28,7 +28,12 @@ compress2 = function(tagdata = NULL,
     mutate(duration_sec = as.double(duration),
            travel_time_sec = as.double(travel_time)) %>%
     mutate(residency_hr = travel_time_sec/3600) %>%
-    select(-duration, -travel_time)
+    select(-duration, -travel_time) %>%
+    mutate(min_det_date = date(min_det),
+           min_det_time = format(min_det, "%H:%M:%S"),
+           max_det_date = date(max_det),
+           max_det_time = format(max_det, "%H:%M:%S")
+    )
   
   return(out)
   
