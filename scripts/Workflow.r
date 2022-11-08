@@ -17,7 +17,7 @@ rm(list = ls())
 options(repos = structure(c(cran="https://ftp.osuosl.org/pub/cran/")))  
 
 # list of packages for use w/ PITcleanr_lits
-packages <- c("plyr","tidyverse","magrittr", "lubridate","esquisse","readr","janitor","nhdplusTools", "sf", "ggraph") 
+packages <- c("plyr","tidyverse","magrittr", "lubridate","esquisse","readr","janitor","nhdplusTools", "sf", "ggraph", "readxl") 
 
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(packages, rownames(installed.packages())))  
@@ -27,16 +27,21 @@ lapply(packages, require, character.only=TRUE)
 #------------------------
 # load required functions
 source("R/addDirectionWrap.r")
-source("R/compress2.r")
+source("R/compressWrap.r")
 source("R/nodeConfig.r")
 source("R/readTagData.r")
 source("R/obsWide.r")
 
 #------------------------
 # Read in and compress data
-obs_all = readTagData() # This reads data in from the "PITcleaner_lite/input/PTAGIS_data" folder. Be sure this exists and contains the two necessary tag queries.
-config = nodeConfig()
-obs_clean = compress2(obs_all, config)
+obs_all = readTagData(filter.test.tags = TRUE) # This reads data from the "input" folder. Be sure that files within the folder have appropriate naming conventions.
+#PTAGIS files must include "PTAGIS" in the filename
+#Biologic files must include "BIOLOGIC" in the filename
+#log files must begin with the node name (ex. "NODENAME_xyz.log")
+#Submersible files must begin with the node name and include "SUB" in the filename (ex. "NODENAME_SUB_xyz.xlsx" or "SUB2_xyz.xlsx")
+
+
+obs_clean = compressWrap(obs_all) #Cleans and compresses PIT tag observation data using PTAGIS data and the "site_metadata" configuration file
 
 #------------------------
 # Write out cleaned and compressed data
@@ -46,7 +51,7 @@ write_csv(obs_wide, paste0('output/TagObs_Wide_',Sys.Date(),'.csv'))
 
 #------------------------
 # Add directionality
-obs_direct = addDirectionWrap(group_nodes = T, build_diagram = T, generate_map = F, downstream_site = "HYC", direction = 'd')
+obs_direct = addDirectionWrap(group_nodes = TRUE, build_diagram = TRUE, generate_map = FALSE, downstream_site = "HYC", direction = 'd')
 write_csv(obs_direct,paste0('output/TagObs_Directionality_', Sys.Date(),'.csv') )
 
 # End of primary workflow
