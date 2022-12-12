@@ -34,7 +34,7 @@ source("R/obsWide.r")
 
 #------------------------
 # Read in and compress data
-obs_all = readTagData(filter.test.tags = TRUE) # This reads data from the "input" folder. Be sure that files within the folder have appropriate naming conventions.
+obs_all = readTagData(filter.test.tags = TRUE, filter.to.ptagis = TRUE) # This reads data from the "input" folder. Be sure that files within the folder have appropriate naming conventions.
 #PTAGIS files must include "PTAGIS" in the filename
 #Biologic files must include "BIOLOGIC" in the filename
 #log files must begin with the node name (ex. "NODENAME_xyz.log")
@@ -49,6 +49,8 @@ write_csv(obs_clean, paste0('output/TagObs_Compressed_', Sys.Date(),'.csv'))
 obs_wide = obsWide(obs_clean)
 write_csv(obs_wide, paste0('output/TagObs_Wide_',Sys.Date(),'.csv'))
 
+
+#Components below are currently in development as of 12/11/22
 #------------------------
 # Add directionality
 obs_direct = addDirectionWrap(group_nodes = TRUE, build_diagram = TRUE, generate_map = FALSE, downstream_site = "HYC", direction = 'd')

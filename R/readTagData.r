@@ -24,7 +24,8 @@ readTagData = function(data_path = 'input',
                        biologic_name = 'BIOLOGIC',
                        sub_name = 'SUB',
                        config_path = 'config',
-                       filter.test.tags = TRUE){
+                       filter.test.tags = TRUE,
+                       filter.to.ptagis = TRUE){
   
   read_csv_quiet = function(x){
     out = read_csv(x, show_col_types = F)
@@ -66,7 +67,6 @@ readTagData = function(data_path = 'input',
     read_bl = function(x){
     out = read_csv_quiet(x) %>%
       mutate(key = paste(site, as.numeric(reader),sep="-")) %>%
-    filter(tag %in% obs_pt$tag_code) %>%
       left_join(meta %>%
       select(reader_name, key), by = c("key")) %>%
       rename(tag_code = tag,
@@ -79,7 +79,9 @@ readTagData = function(data_path = 'input',
              event_type_name = "Observation",
              antenna_group_configuration_value = 1,
              event_site_type_description = "Instream Remote Detection System") %>%
-      janitor::clean_names() 
+      janitor::clean_names()
+    
+    
     
     return(out)
     }
@@ -90,6 +92,10 @@ readTagData = function(data_path = 'input',
                   distinct(),
                 by = c("tag_code")) %>%
       select(-site)
+    
+    if(filter.to.ptagis == TRUE){
+      obs_bl %<>% filter(tag %in% obs_pt$tag_code)
+    }
     
     obs_all %<>%
       bind_rows(obs_bl)
@@ -118,11 +124,14 @@ readTagData = function(data_path = 'input',
       return(out)
     }
     obs_log = ldply(log_files, read_log_file) %>%
-      filter(tag_code %in% obs_pt$tag_code) %>%
       left_join(obs_pt %>%
                   select(tag_code, mark_species_name, mark_rear_type_name) %>%
                   distinct(),
                 by = c("tag_code"))
+    
+    if(filter.to.ptagis == TRUE){
+      obs_log %<>% filter(tag_code %in% obs_pt$tag_code)
+    }
     
     obs_all %<>%
       bind_rows(obs_log)
@@ -150,11 +159,14 @@ readTagData = function(data_path = 'input',
     }
     
     obs_sub = ldply(sub_files, read_sub_file)%>%
-      filter(tag_code %in% obs_pt$tag_code) %>%
       left_join(obs_pt %>%
                   select(tag_code, mark_species_name, mark_rear_type_name) %>%
                   distinct(),
                 by = c("tag_code"))
+    
+    if(filter.to.ptagis == TRUE){
+      obs_sub %<>% filter(tag_code %in% obs_pt$tag_code)
+    }
       
     
     obs_all %<>%
