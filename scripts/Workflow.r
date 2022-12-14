@@ -50,7 +50,7 @@ obs_wide = obsWide(obs_clean)
 write_csv(obs_wide, paste0('output/TagObs_Wide_',Sys.Date(),'.csv'))
 
 
-#Components below are currently in development as of 12/11/22
+#Components below are currently in development as of 12/13/22 - functionality is not guaranteed
 #------------------------
 # Add directionality
 obs_direct = addDirectionWrap(group_nodes = TRUE, build_diagram = TRUE, generate_map = FALSE, downstream_site = "HYC", direction = 'd')

@@ -25,17 +25,9 @@ compressWrap = function(tagdata = obs_all){
   source('R/queryInterrogationMeta.r')
   source('R/queryMRRMeta.r')
   
-  site_meta = nodeConfig()
+  config = nodeConfig()
   
-  ptagis_meta = queryPtagisMeta() %>%
-    filter(site_code %in% tagdata$event_site_code_value) %>%
-    select(site_code, latitude, longitude, rkm_total) %>%
-    distinct() %>%
-    rename()
-  
-  config = bind_
-  
-    
+
   
   out = compress(ptagis_file = tagdata, configuration = config, ignore_event_vs_release = T, units = "secs") %>%
     mutate(duration = str_replace_all(duration, "secs", ''),

@@ -94,7 +94,7 @@ readTagData = function(data_path = 'input',
       select(-site)
     
     if(filter.to.ptagis == TRUE){
-      obs_bl %<>% filter(tag %in% obs_pt$tag_code)
+      obs_bl %<>% filter(tag_code %in% obs_pt$tag_code)
     }
     
     obs_all %<>%

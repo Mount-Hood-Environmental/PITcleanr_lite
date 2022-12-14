@@ -27,16 +27,29 @@ nodeConfig = function(config_path = 'config',
     site_meta = read_csv(config_files, show_col_types = F) %>%
       janitor::clean_names() %>%
       mutate(reader = as.character(reader_number)) %>%
-      mutate(key = paste0(site_code, '_', reader))
+      rename(event_site_code_value = reader_name)
     
+    ptagis_meta = queryPtagisMeta() %>%
+      filter(site_code %in% tagdata$event_site_code_value) %>%
+      select(site_code, latitude, longitude, rkm_total) %>%
+      distinct() %>%
+      rename(rkm = rkm_total) %>%
+      mutate(event_site_code_value = site_code)
+    
+    meta = bind_rows(site_meta, ptagis_meta)
+
     config = tagdata %>%
-      left_join(site_meta, by = 'key') %>%
-      mutate(node = ifelse(is.na(node), event_site_code_value, node),
-             config_id = 1) %>%
+    left_join(meta, by = 'event_site_code_value') %>%
+    mutate(antenna_id = ifelse(is.na(antenna_id), antenna_number, antenna_id),
+       antenna_group_configuration_value = ifelse(is.na(antenna_group_configuration_value), 1, antenna_group_configuration_value)
+    ) %>%
       select(site_code = event_site_code_value,
+             node = event_site_code_value,
+             latitude,
+             longitude,
+             rkm,
              antenna_id,
-             node,
-             config_id) %>%
+             antenna_group_configuration_value) %>%
       distinct()
     
     #print(c("Files found and imported:", config_files))
