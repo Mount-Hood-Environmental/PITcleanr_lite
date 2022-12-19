@@ -36,6 +36,9 @@ readTagData = function(data_path = 'input',
   meta_files = list.files(path = config_path, pattern = '*site_metadata.*\\.csv', full.names = T)
   filtertag_files = list.files(config_path, pattern = '^filter_tags.*\\.csv', full.names = T)
   ptagis_files = list.files(data_path, pattern = paste0('*',ptagis_name,'.*\\.csv'), full.names = T)
+  #ptagis_obs = list.files(data_path, pattern = paste0('*',paste0(ptagis_name, obs_name),'.*\\.csv'), full.names = T)
+  #ptagis_mark = list.files(data_path, pattern = paste0('*',paste0(ptagis_name, mark_name),'.*\\.csv'), full.names = T)
+  #ptagis_recap = list.files(data_path, pattern = paste0('*',paste0(ptagis_name, recap_name),'.*\\.csv'), full.names = T)
   bl_files = list.files(data_path, pattern = paste0('*',biologic_name,'.*\\.csv'), full.names = T)
   log_files = list.files(data_path, pattern = paste0('*\\.log'), full.names = T)
   sub_files = list.files(data_path, pattern = paste0('*',sub_name,'.*\\.xlsx'), full.names = T)
@@ -53,12 +56,32 @@ readTagData = function(data_path = 'input',
   
   #PTAGIS data####
   if(length(ptagis_files > 0)){
+  #   
+  #   read_ptagis = function(x){
+  #     dat = read_csv_quiet(x) %>%
+  #       janitor::clean_names()
+  #     
+  #     if("mark_file" %in% names(dat)){
+  #       if("recap_file" %in% names(dat)){
+  #         #handling recap files
+  #         
+  #       }else{
+  #         #handling mark files
+  #         
+  #       }
+  #     }else{
+  #       #handling obs files
+  #       dat %<>% 
+  #         mutate(event_date_time_value = mdy_hms(event_date_time_value))
+  #       
+  #     }
+  #   }
     
     obs_pt = ldply(ptagis_files, read_csv_quiet) %>%
-    janitor::clean_names() %>%
-    mutate(event_date_time_value = mdy_hms(event_date_time_value))
+      janitor::clean_names() %>%
+      mutate(event_date_time_value = mdy_hms(event_date_time_value))
     
-    obs_all = obs_pt
+    obs_all = obs_pt 
   }
   
   #Biologic data####
@@ -190,6 +213,7 @@ readTagData = function(data_path = 'input',
       select(-test_tag)
     }
   }
+
   
   #outputs####
   print(c("-CONFIGURATION FILES-",

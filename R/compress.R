@@ -38,7 +38,8 @@ compress = function(ptagis_file = NULL,
                     units = c("mins",
                               "auto", "secs", "hours",
                               "days", "weeks"),
-                    ignore_event_vs_release = FALSE) {
+                    ignore_event_vs_release = FALSE,
+                    attributes = attributes_list) {
 
   stopifnot(!is.null(ptagis_file))
 

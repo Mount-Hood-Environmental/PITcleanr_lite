@@ -34,6 +34,7 @@ source("R/obsWide.r")
 
 #------------------------
 # Read in and compress data
+
 obs_all = readTagData(filter.test.tags = TRUE, filter.to.ptagis = TRUE) # This reads data from the "input" folder. Be sure that files within the folder have appropriate naming conventions.
 #PTAGIS files must include "PTAGIS" in the filename
 #Biologic files must include "BIOLOGIC" in the filename
@@ -41,7 +42,7 @@ obs_all = readTagData(filter.test.tags = TRUE, filter.to.ptagis = TRUE) # This r
 #Submersible files must begin with the node name and include "SUB" in the filename (ex. "NODENAME_SUB_xyz.xlsx" or "SUB2_xyz.xlsx")
 
 
-obs_clean = compressWrap(obs_all) #Cleans and compresses PIT tag observation data using PTAGIS data and the "site_metadata" configuration file
+obs_clean = compressWrap(obs_all, attributes_list = c("event_length_mm","event_weight_g")) #Cleans and compresses PIT tag observation data using PTAGIS data and the "site_metadata" configuration file
 
 #------------------------
 # Write out cleaned and compressed data

@@ -15,7 +15,8 @@
 #' @export
 #' @return a tibble
 
-compressWrap = function(tagdata = obs_all){
+compressWrap = function(tagdata = obs_all,
+                        attributes_list = c("event_length_mm","event_weight_g")){
   
   source('R/compress.R')
   source('R/readCTH.r')
@@ -39,8 +40,15 @@ compressWrap = function(tagdata = obs_all){
     mutate(min_det_date = date(min_det),
            min_det_time = format(min_det, "%H:%M:%S"),
            max_det_date = date(max_det),
-           max_det_time = format(max_det, "%H:%M:%S")
-    )
+           max_det_time = format(max_det, "%H:%M:%S")) %>%
+    left_join(tagdata %>%
+                select(tag_code, event_site_code_value, event_date_time_value, all_of(attributes_list)) %>%
+                mutate(min_det_date = date(event_date_time_value)) %>%
+                select(-event_date_time_value) %>%
+                distinct(),
+              by = c("tag_code","node" = "event_site_code_value", "min_det_date"
+                     )
+              )
   
   return(out)
   

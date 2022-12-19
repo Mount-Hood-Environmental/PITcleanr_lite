@@ -12,15 +12,21 @@
 #' @return a tibble
 
 
-obsWide = function(obs_compressed){
+obsWide = function(obs_compressed = obs_clean){
+  
+  order = nodeConfig() %>%
+    select(node, rkm) %>%
+    distinct() %>%
+    arrange(desc(rkm))
   
   out = obs_compressed %>%
-    pivot_wider(names_from = node, values_from = n_dets) %>%
-    select(-c(slot:max_det_time)) %>%
+    group_by(tag_code, node) %>%
+    summarise(dets = sum(n_dets)) %>%
+    ungroup() %>%
+    pivot_wider(names_from = node, values_from = dets) %>%
     mutate_all(~replace(., is.na(.), 0)) %>%
-    group_by(tag_code)%>%
-    summarise(across(everything(), sum)) %>%
-    ungroup()
-  
+    select(tag_code, order$node)
+
+
   return(out)
 }
