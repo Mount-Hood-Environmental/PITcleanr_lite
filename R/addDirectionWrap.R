@@ -23,7 +23,6 @@ addDirectionWrap = function(tagdata = obs_clean,
                          build_diagram = FALSE,
                          generate_map = FALSE,
                          downstream_site = 'HYC',
-                         downstream_site = NULL,
                          dwnstrm_sites = TRUE){
   
   source('R/addDirection_lite.R')
