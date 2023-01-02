@@ -48,7 +48,10 @@ compressWrap = function(tagdata = obs_all,
                 distinct(),
               by = c("tag_code","node" = "event_site_code_value", "min_det_date"
                      )
-              )
+              ) %>%
+    left_join(config %>%
+                select(node, rkm, latitude, longitude) %>%
+                distinct())
   
   return(out)
   
