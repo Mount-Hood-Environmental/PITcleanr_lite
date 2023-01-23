@@ -24,8 +24,8 @@ readTagData = function(data_path = 'input',
                        biologic_name = 'BIOLOGIC',
                        sub_name = 'SUB',
                        config_path = 'config',
-                       filter.test.tags = TRUE,
-                       filter.to.ptagis = TRUE){
+                       filter_test_tags = TRUE,
+                       filter_to_ptagis = TRUE){
   
   read_csv_quiet = function(x){
     out = read_csv(x, show_col_types = F)
@@ -116,7 +116,7 @@ readTagData = function(data_path = 'input',
                 by = c("tag_code")) %>%
       select(-site)
     
-    if(filter.to.ptagis == TRUE){
+    if(filter_to_ptagis == TRUE){
       obs_bl %<>% filter(tag_code %in% obs_pt$tag_code)
     }
     
@@ -152,7 +152,7 @@ readTagData = function(data_path = 'input',
                   distinct(),
                 by = c("tag_code"))
     
-    if(filter.to.ptagis == TRUE){
+    if(filter_to_ptagis == TRUE){
       obs_log %<>% filter(tag_code %in% obs_pt$tag_code)
     }
     
@@ -187,7 +187,7 @@ readTagData = function(data_path = 'input',
                   distinct(),
                 by = c("tag_code"))
     
-    if(filter.to.ptagis == TRUE){
+    if(filter_to_ptagis == TRUE){
       obs_sub %<>% filter(tag_code %in% obs_pt$tag_code)
     }
       
@@ -207,7 +207,7 @@ readTagData = function(data_path = 'input',
                                "yes",
                                "no"))
     
-    if(filter.test.tags == TRUE){
+    if(filter_test_tags == TRUE){
       obs_all %<>%
       filter(test_tag == "no") %>%
       select(-test_tag)

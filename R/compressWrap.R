@@ -33,9 +33,9 @@ compressWrap = function(tagdata = obs_all,
   out = compress(ptagis_file = tagdata, configuration = config, ignore_event_vs_release = T, units = "secs") %>%
     mutate(duration = str_replace_all(duration, "secs", ''),
            travel_time = str_replace_all(travel_time, "secs", '')) %>%
-    mutate(duration_sec = as.double(duration),
-           travel_time_sec = as.double(travel_time)) %>%
-    mutate(residency_hr = travel_time_sec/3600) %>%
+    mutate(duration_hr = as.double(duration)/3600,
+           travel_time_hr = as.double(travel_time)/3600) %>%
+    rename(residency_hr = duration_hr) %>%
     select(-duration, -travel_time) %>%
     mutate(min_det_date = date(min_det),
            min_det_time = format(min_det, "%H:%M:%S"),
@@ -50,7 +50,7 @@ compressWrap = function(tagdata = obs_all,
                      )
               ) %>%
     left_join(config %>%
-                select(node, rkm, latitude, longitude) %>%
+                select(node, rkm, latitude, longitude, restoration_site, restoration_entrance_or_exit, restoration_interior) %>%
                 distinct())
   
   return(out)

@@ -1,23 +1,23 @@
-ID,Reader #,Reader Name,Reader Sub Site,Stream Name,Channel Name,Site Name,Site Code,Antenna Name,Antenna Number,Latitude,Longitude,RKM
-1,1,HRSC1,Henry's Restoration Upper,Lemhi River,Channel 1,LemhiLitzCords,0LL,Antenna,1,44.897006,-113.625023,1285.9
-2,2,HRSC1-1,Henry's Restoration Upper,Lemhi River,Channel 1,LemhiLitzCords,0LL,Antenna,1,44.897099,-113.62515,1285.9
-3,3,HRSC2,Henry's Restoration Upper,Lemhi River,Channel 2,LemhiLitzCords,0LL,Antenna,1,44.897393,-113.624956,1285.9
-4,4,HRSC2-1,Henry's Restoration Upper,Lemhi River,Channel 2,LemhiLitzCords,0LL,Antenna,1,44.897447,-113.625093,1285.9
-5,5,HRSC3,Henry's Restoration Lower,Lemhi River,Channel 3,LemhiLitzCords,0LL,Antenna,1,44.89898,-113.626358,1285.7
-6,6,HRSC3-1,Henry's Restoration Lower,Lemhi River,Channel 3,LemhiLitzCords,0LL,Antenna,1,44.899119,-113.626304,1285.7
-7,7,HRSC4,Henry's Restoration Lower,Lemhi River,Channel 4,LemhiLitzCords,0LL,Antenna,1,44.899089,-113.626735,1285.7
-8,8,HRSC4-1,Henry's Restoration Lower,Lemhi River,Channel 4,LemhiLitzCords,0LL,Antenna,1,44.899195,-113.626618,1285.7
-9,9,HRSC5,Henry's Restoration Lower,Lemhi River,Channel 5,LemhiLitzCords,0LL,Antenna,1,44.899165,-113.627179,1285.7
-10,10,HRSC5-1,Henry's Restoration Lower,Lemhi River,Channel 5,LemhiLitzCords,0LL,Antenna,1,44.89933,-113.627334,1285.7
-11,11,HRSC6,Henry's Restoration Lower,Lemhi River,Channel 5,LemhiLitzCords,0LL,Antenna,1,44.899907,-113.627693,1285.6
-12,12,HRSC6-1,Henry's Restoration Lower,Lemhi River,Channel 5/6,LemhiLitzCords,0LL,Antenna,1,44.899987,-113.627642,1285.6
-13,13,HRSC6-2,Henry's Restoration Lower,Lemhi River,Channel 6,LemhiLitzCords,0LL,Antenna,1,44.899892,-113.627964,1285.6
-14,14,HRSC7,Henry's Restoration Lower,Lemhi River,Channel 7,LemhiLitzCords,0LL,Antenna,1,44.89995,-113.626883,1285.5
-15,15,HRSC8,Henry's Restoration Lower,Lemhi River,Channel 3/4,LemhiLitzCords,0LL,Antenna,1,44.900218,-113.626574,1285.4
-16,16,SRSC1,Split River Ranch,Lemhi River,Channel 8,LemhiLitzCords,0LL,Antenna,1,44.874102,-113.628846,1289
-17,17,SRSC1-1,Split River Ranch,Lemhi River,Channel 8,LemhiLitzCords,0LL,Antenna,1,44.874225,-113.628803,1289
-18,18,SRSC2,Split River Ranch,Lemhi River,Channel 8,LemhiLitzCords,0LL,Antenna,1,44.876775,-113.629752,1289
-19,1,SUB1,Henry's Submersibles,Lemhi River,Main Channel,HenrysSUBS,SUB,Antenna,2,44.898671,-113.626937,1285.8
-20,2,SUB2,Henry's Submersibles,Lemhi River,Main Channel,HenrysSUBS,SUB,Antenna,2,44.898671,-113.626937,1285.8
-21,3,SUB3,Henry's Submersibles,Lemhi River,Main Channel,HenrysSUBS,SUB,Antenna,2,44.898954,-113.626837,1285.8
-22,1,HRIA,Henry's Main Stem,Lemhi River,Main Channel,HenrysArray,0HR,Antenna,3,44.897076,-113.624795,1286
+ID,Reader #,Reader Name,Reader Sub Site,Stream Name,Channel Name,Site Name,Site Code,Antenna Name,Antenna Number,Latitude,Longitude,RKM,Restoration Site,Restoration entrance or exit,Restoration interior
+1,1,HRSC1,Henry's Restoration Upper,Lemhi River,Channel 1,LemhiLitzCords,0LL,Antenna,1,44.897006,-113.625023,1285.9,Yes,Yes,No
+2,2,HRSC1-1,Henry's Restoration Upper,Lemhi River,Channel 1,LemhiLitzCords,0LL,Antenna,1,44.897099,-113.62515,1285.9,Yes,No,Yes
+3,3,HRSC2,Henry's Restoration Upper,Lemhi River,Channel 2,LemhiLitzCords,0LL,Antenna,1,44.897393,-113.624956,1285.9,Yes,Yes,No
+4,4,HRSC2-1,Henry's Restoration Upper,Lemhi River,Channel 2,LemhiLitzCords,0LL,Antenna,1,44.897447,-113.625093,1285.9,Yes,No,Yes
+5,5,HRSC3,Henry's Restoration Lower,Lemhi River,Channel 3,LemhiLitzCords,0LL,Antenna,1,44.89898,-113.626358,1285.7,Yes,Yes,No
+6,6,HRSC3-1,Henry's Restoration Lower,Lemhi River,Channel 3,LemhiLitzCords,0LL,Antenna,1,44.899119,-113.626304,1285.7,Yes,No,Yes
+7,7,HRSC4,Henry's Restoration Lower,Lemhi River,Channel 4,LemhiLitzCords,0LL,Antenna,1,44.899089,-113.626735,1285.7,Yes,Yes,No
+8,8,HRSC4-1,Henry's Restoration Lower,Lemhi River,Channel 4,LemhiLitzCords,0LL,Antenna,1,44.899195,-113.626618,1285.7,Yes,No,Yes
+9,9,HRSC5,Henry's Restoration Lower,Lemhi River,Channel 5,LemhiLitzCords,0LL,Antenna,1,44.899165,-113.627179,1285.7,Yes,Yes,No
+10,10,HRSC5-1,Henry's Restoration Lower,Lemhi River,Channel 5,LemhiLitzCords,0LL,Antenna,1,44.89933,-113.627334,1285.7,Yes,No,Yes
+11,11,HRSC6,Henry's Restoration Lower,Lemhi River,Channel 5,LemhiLitzCords,0LL,Antenna,1,44.899907,-113.627693,1285.6,Yes,No,Yes
+12,12,HRSC6-1,Henry's Restoration Lower,Lemhi River,Channel 5/6,LemhiLitzCords,0LL,Antenna,1,44.899987,-113.627642,1285.6,Yes,Yes,No
+13,13,HRSC6-2,Henry's Restoration Lower,Lemhi River,Channel 6,LemhiLitzCords,0LL,Antenna,1,44.899892,-113.627964,1285.6,Yes,No,Yes
+14,14,HRSC7,Henry's Restoration Lower,Lemhi River,Channel 7,LemhiLitzCords,0LL,Antenna,1,44.89995,-113.626883,1285.5,Yes,No,Yes
+15,15,HRSC8,Henry's Restoration Lower,Lemhi River,Channel 3/4,LemhiLitzCords,0LL,Antenna,1,44.900218,-113.626574,1285.4,Yes,Yes,No
+16,16,SRSC1,Split River Ranch,Lemhi River,Channel 8,LemhiLitzCords,0LL,Antenna,1,44.874102,-113.628846,1289,No,No,No
+17,17,SRSC1-1,Split River Ranch,Lemhi River,Channel 8,LemhiLitzCords,0LL,Antenna,1,44.874225,-113.628803,1289,No,No,No
+18,18,SRSC2,Split River Ranch,Lemhi River,Channel 8,LemhiLitzCords,0LL,Antenna,1,44.876775,-113.629752,1289,No,No,No
+19,1,SUB1,Henry's Submersibles,Lemhi River,Main Channel,HenrysSUBS,SUB,Antenna,2,44.898671,-113.626937,1285.8,Yes,No,Yes
+20,2,SUB2,Henry's Submersibles,Lemhi River,Main Channel,HenrysSUBS,SUB,Antenna,2,44.898671,-113.626937,1285.8,Yes,No,Yes
+21,3,SUB3,Henry's Submersibles,Lemhi River,Main Channel,HenrysSUBS,SUB,Antenna,2,44.898954,-113.626837,1285.8,Yes,No,Yes
+22,1,HRIA,Henry's Main Stem,Lemhi River,Main Channel,HenrysArray,0HR,Antenna,3,44.897076,-113.624795,1286,Yes,No,No

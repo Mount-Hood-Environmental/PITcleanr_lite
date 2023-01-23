@@ -49,8 +49,16 @@ nodeConfig = function(config_path = 'config',
              longitude,
              rkm,
              antenna_id,
-             antenna_group_configuration_value) %>%
-      distinct()
+             antenna_group_configuration_value,
+             restoration_site,
+             restoration_entrance_or_exit,
+             restoration_interior
+             ) %>%
+      distinct() %>%
+      mutate(restoration_site = ifelse(is.na(restoration_site), 'No',restoration_site),
+             restoration_entrance_or_exit = ifelse(is.na(restoration_entrance_or_exit), 'No', restoration_entrance_or_exit),
+             restoration_interior = ifelse(is.na(restoration_interior), 'No', restoration_interior))
+    
     
     #print(c("Files found and imported:", config_files))
     return(config)

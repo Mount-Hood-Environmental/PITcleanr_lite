@@ -114,33 +114,39 @@ addDirectionWrap = function(tagdata = obs_clean,
   #     distinct()
   # }
   
-  # if(build_diagram == T){
-  # #Output path diagram
-  #   
-  #   if(direction == 'd'){
-  #     
-  #     flow_dia = plotNodes(rkm_dat %>%
-  #                            rename(parent_new = child,
-  #                                   child = parent) %>%
-  #                            rename(parent = parent_new))
-  #     
-  #   } else {
-  # flow_dia = plotNodes(rkm_dat)
-  #   }
-  # ggsave(paste0('output/figures/Node_Diagram_', Sys.Date(),'.tiff'),
-  #        flow_dia,
-  #        width = 4,
-  #        height = 4,
-  #        units = 'in',
-  #        dpi = 300)
-  # 
-  # }
+  if(build_diagram == T){
+  #Output path diagram
+    
+    flow_dia = tagdata %>%
+      dplyr::select(node, rkm) %>%
+      distinct() %>%
+      group_by(rkm) %>%
+      dplyr::summarise(x = row_number(node),
+                       node = node) %>%
+      ungroup() %>%
+      ggplot()+
+      geom_text(aes(x = x, y = rkm, label = node))+
+      theme_bw()+
+      theme(panel.grid = element_blank(),
+            axis.title.x = element_blank(),
+            axis.text.x = element_blank(),
+            axis.ticks.x = element_blank())+
+      labs(y = "RKM")
+
+  ggsave(paste0('output/figures/Node_Diagram_', Sys.Date(),'.tiff'),
+         flow_dia,
+         width = 4,
+         height = 4,
+         units = 'in',
+         dpi = 300)
+
+  }
   
 
 
 
     out = addDirection_lite(compress_obs = tagdata) %>%
-      mutate(path_len = str_length(path)) %>%
+      mutate(path_len = str_count(path, " ")) %>%
       group_by(tag_code, node, slot) %>%
       slice_max(max_det) %>%
       slice_max(path_len) %>%
@@ -152,52 +158,7 @@ addDirectionWrap = function(tagdata = obs_clean,
              max_det_time = format(max_det, "%H:%M:%S")
       )
 
-  # 
-  # if(direction_file == 'hardcoded'){
-  #   
-  #   dir_hard = read_csv("input/metadata/node_direction_hardcoded.csv", show_col_types = F)
-  #   
-  #   # which observation locations are not in node_order?
-  #   dropped_locs = setdiff(tagdata$node, dir_hard$node)
-  #   
-  #   paste("Detections from the following nodes were dropped,
-  #       because they were not in the parent-child table:\n",
-  #         paste(dropped_locs, collapse = ", "), "\n") %>%
-  #     message()
-  #   
-  #   # filter out observations at sites not included in the node order
-  #   # determine direction of movement
-  #   out = tagdata %>%
-  #     left_join(dir_hard,
-  #               by = "node") %>%
-  #     #filter(!is.na(dir_hard)) %>%
-  #     arrange(tag_code, slot) %>%
-  #     group_by(tag_code) %>%
-  #     mutate(lead_dir_hard = lead(dir_hard),
-  #            lag_dir_hard = lag(dir_hard),
-  #            lag_node = lag(node),
-  #            lead_node = lead(node),
-  #            lead_path = lead(path),
-  #            lag_path = lag(path)) %>%
-  #     ungroup() %>%
-  #     rowwise() %>%
-  #     mutate(direction = if_else(dir_hard == 1 & is.na(lag_dir_hard),
-  #                                "start",
-  #                                if_else(dir_hard > lag_dir_hard &
-  #                                          (stringr::str_detect(path, paste0(" ", lag_node)) |
-  #                                             stringr::str_detect(path, paste0("^", lag_node))),
-  #                                        "forward",
-  #                                        if_else(dir_hard < lag_dir_hard &
-  #                                                  (stringr::str_detect(lag_path, paste0(" ", node)) |
-  #                                                     stringr::str_detect(lag_path, paste0("^", node))),
-  #                                                "backward",
-  #                                                if_else(node == lag_node,
-  #                                                        "no movement",
-  #                                                        "unknown"))))) %>%
-  #     ungroup() %>%
-  #     select(-starts_with(c("lead", "lag")))
-  #   
-  # }
+  
   
   return(out)
 }

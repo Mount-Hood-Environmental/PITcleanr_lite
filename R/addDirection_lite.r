@@ -22,13 +22,9 @@ addDirection_lite = function(compress_obs = NULL) {
     
     out = x %>%
       arrange(tag_code, slot) %>%
-      group_by(tag_code) %>%
-      mutate(path = ifelse(slot == 1, node
-                                       ,ifelse(node == word(lag(node),-1),lag(node)
-                                               ,paste(lag(node), node, sep = " "
-                                               )
-                                       )
-      )
+      #group_by(tag_code) %>%
+      dplyr::mutate(path = sapply(1:nrow(.),
+                                  function(x) paste(node[(x - .$slot[x]+1):x], collapse = ' '))
                    ,direction = ifelse(slot == 1, "start"
                                  ,ifelse(lag(rkm) > rkm, "downstream"
                                          ,ifelse(lag(rkm) < rkm, "upstream"
@@ -38,13 +34,12 @@ addDirection_lite = function(compress_obs = NULL) {
                                                  )
                                          )
                                  )
-             ) %>%
-      ungroup()
-      
+             )
+    
     return(out)
   }
   
-  # determine direction of movement
+  # determine paths and direction of movement
   obs_direct = compress_obs %>%
     getPaths() 
     
