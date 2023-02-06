@@ -114,33 +114,33 @@ addDirectionWrap = function(tagdata = obs_clean,
   #     distinct()
   # }
   
-  if(build_diagram == T){
-  #Output path diagram
-    
-    flow_dia = tagdata %>%
-      dplyr::select(node, rkm) %>%
-      distinct() %>%
-      group_by(rkm) %>%
-      dplyr::summarise(x = row_number(node),
-                       node = node) %>%
-      ungroup() %>%
-      ggplot()+
-      geom_text(aes(x = x, y = rkm, label = node))+
-      theme_bw()+
-      theme(panel.grid = element_blank(),
-            axis.title.x = element_blank(),
-            axis.text.x = element_blank(),
-            axis.ticks.x = element_blank())+
-      labs(y = "RKM")
-
-  ggsave(paste0('output/figures/Node_Diagram_', Sys.Date(),'.tiff'),
-         flow_dia,
-         width = 4,
-         height = 4,
-         units = 'in',
-         dpi = 300)
-
-  }
+  # if(build_diagram == T){
+  # #Output path diagram
+  #   
+  #   flow_dia = tagdata %>%
+  #     dplyr::select(node, rkm) %>%
+  #     distinct() %>%
+  #     group_by(rkm) %>%
+  #     dplyr::summarise(x = row_number(node),
+  #                      node = node) %>%
+  #     ungroup() %>%
+  #     ggplot()+
+  #     geom_text(aes(x = x, y = rkm, label = node))+
+  #     theme_bw()+
+  #     theme(panel.grid = element_blank(),
+  #           axis.title.x = element_blank(),
+  #           axis.text.x = element_blank(),
+  #           axis.ticks.x = element_blank())+
+  #     labs(y = "RKM")
+  # 
+  # ggsave(paste0('output/figures/Node_Diagram_', Sys.Date(),'.tiff'),
+  #        flow_dia,
+  #        width = 4,
+  #        height = 4,
+  #        units = 'in',
+  #        dpi = 300)
+  # 
+  # }
   
 
 

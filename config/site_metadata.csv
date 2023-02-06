@@ -14,9 +14,9 @@ ID,Reader #,Reader Name,Reader Sub Site,Stream Name,Channel Name,Site Name,Site 
 13,13,HRSC6-2,Henry's Restoration Lower,Lemhi River,Channel 6,LemhiLitzCords,0LL,Antenna,1,44.899892,-113.627964,1285.6,Yes,No,Yes
 14,14,HRSC7,Henry's Restoration Lower,Lemhi River,Channel 7,LemhiLitzCords,0LL,Antenna,1,44.89995,-113.626883,1285.5,Yes,No,Yes
 15,15,HRSC8,Henry's Restoration Lower,Lemhi River,Channel 3/4,LemhiLitzCords,0LL,Antenna,1,44.900218,-113.626574,1285.4,Yes,Yes,No
-16,16,SRSC1,Split River Ranch,Lemhi River,Channel 8,LemhiLitzCords,0LL,Antenna,1,44.874102,-113.628846,1289,No,No,No
-17,17,SRSC1-1,Split River Ranch,Lemhi River,Channel 8,LemhiLitzCords,0LL,Antenna,1,44.874225,-113.628803,1289,No,No,No
-18,18,SRSC2,Split River Ranch,Lemhi River,Channel 8,LemhiLitzCords,0LL,Antenna,1,44.876775,-113.629752,1289,No,No,No
+16,16,SRSC1,Split River Ranch,Lemhi River,Channel 8,LemhiLitzCords,0LL,Antenna,1,44.874102,-113.628846,1289,Yes,Yes,No
+17,17,SRSC1-1,Split River Ranch,Lemhi River,Channel 8,LemhiLitzCords,0LL,Antenna,1,44.874225,-113.628803,1289,Yes,No,Yes
+18,18,SRSC2,Split River Ranch,Lemhi River,Channel 8,LemhiLitzCords,0LL,Antenna,1,44.876775,-113.629752,1289,Yes,Yes,No
 19,1,SUB1,Henry's Submersibles,Lemhi River,Main Channel,HenrysSUBS,SUB,Antenna,2,44.898671,-113.626937,1285.8,Yes,No,Yes
 20,2,SUB2,Henry's Submersibles,Lemhi River,Main Channel,HenrysSUBS,SUB,Antenna,2,44.898671,-113.626937,1285.8,Yes,No,Yes
 21,3,SUB3,Henry's Submersibles,Lemhi River,Main Channel,HenrysSUBS,SUB,Antenna,2,44.898954,-113.626837,1285.8,Yes,No,Yes
