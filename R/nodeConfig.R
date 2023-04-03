@@ -22,13 +22,6 @@ nodeConfig = function(config_path = 'config',
   
   config_files = list.files(path = config_path, pattern = paste0('*',config_name,'.*\\.csv'), full.names = T)
   
-  if(length(config_files > 0)){
-    
-    site_meta = read_csv(config_files, show_col_types = F) %>%
-      janitor::clean_names() %>%
-      mutate(reader = as.character(reader_number)) %>%
-      rename(event_site_code_value = reader_name)
-    
     ptagis_meta = queryPtagisMeta() %>%
       filter(site_code %in% tagdata$event_site_code_value) %>%
       select(site_code, latitude, longitude, rkm_total) %>%
@@ -36,8 +29,18 @@ nodeConfig = function(config_path = 'config',
       rename(rkm = rkm_total) %>%
       mutate(event_site_code_value = site_code)
     
-    meta = bind_rows(site_meta, ptagis_meta)
-
+    if(length(config_files > 0)){
+      
+      site_meta = read_csv(config_files, show_col_types = F) %>%
+        janitor::clean_names() %>%
+        mutate(reader = as.character(reader_number)) %>%
+        rename(event_site_code_value = reader_name)
+      
+      meta = bind_rows(site_meta, ptagis_meta)
+    }else{
+  meta = ptagis_meta
+    
+}
     config = tagdata %>%
     left_join(meta, by = 'event_site_code_value') %>%
     mutate(antenna_id = ifelse(is.na(antenna_id), antenna_number, antenna_id),

@@ -19,8 +19,8 @@
 
 
 addDirectionWrap = function(tagdata = obs_clean,
-                         group_nodes = FALSE,
-                         build_diagram = FALSE,
+                         group_nodes = FALSE, #currently unused
+                         build_diagram = FALSE, #currently unused
                          generate_map = FALSE,
                          downstream_site = 'HYC',
                          dwnstrm_sites = TRUE){

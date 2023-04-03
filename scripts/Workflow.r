@@ -53,6 +53,5 @@ write_csv(obs_direct,paste0('output/TagObs_Directionality_', Sys.Date(),'.csv') 
 
 final_paths = finalPaths(obs_direct, calculate_restoration_use = TRUE)
 
-write_csv(final_paths,
-  paste0('output/TagObs_FinalPaths_', Sys.Date(), '.csv'))
+write_csv(final_paths,  paste0('output/TagObs_FinalPaths_', Sys.Date(), '.csv'))
  
