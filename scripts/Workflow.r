@@ -33,7 +33,6 @@ obs_all = readTagData(filter_test_tags = TRUE,
 #log files must begin with the node name (eg. "NODENAME_xyz.log")
 #Submersible files must begin with the node name and include "SUB" in the filename (eg. "NODENAME_SUB_xyz.xlsx" or "SUB2_xyz.xlsx")
 
-
 obs_clean = compressWrap(obs_all, attributes_list = c("event_length_mm","event_weight_g"))
 
 #------------------------
@@ -54,4 +53,6 @@ write_csv(obs_direct,paste0('output/TagObs_Directionality_', Sys.Date(),'.csv') 
 final_paths = finalPaths(obs_direct, calculate_restoration_use = TRUE)
 
 write_csv(final_paths,  paste0('output/TagObs_FinalPaths_', Sys.Date(), '.csv'))
+
+
  

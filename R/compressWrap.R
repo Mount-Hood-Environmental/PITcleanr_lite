@@ -46,8 +46,8 @@ compressWrap = function(tagdata = obs_all,
                 mutate(min_det_date = date(event_date_time_value)) %>%
                 select(-event_date_time_value) %>%
                 distinct(),
-              by = c("tag_code","node" = "event_site_code_value", "min_det_date"
-                     )
+              relationship = "many-to-many",
+              by = c("tag_code","node" = "event_site_code_value", "min_det_date"),
               ) %>%
     left_join(config %>%
                 select(node, rkm, latitude, longitude, restoration_site, restoration_entrance_or_exit, restoration_interior) %>%

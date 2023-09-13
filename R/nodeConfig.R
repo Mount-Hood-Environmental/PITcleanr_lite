@@ -66,4 +66,3 @@ nodeConfig = function(config_path = 'config',
     #print(c("Files found and imported:", config_files))
     return(config)
   }
-}

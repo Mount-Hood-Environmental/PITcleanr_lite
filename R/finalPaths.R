@@ -62,7 +62,8 @@ finalPaths = function(obs_direct = obs_direct, calculate_restoration_use = TRUE)
                 select(tag_code, node, min_det_date, min_det_time) %>%
                 rename(first_node = node,
                        first_det_date = min_det_date,
-                       first_det_time = min_det_time)) %>%
+                       first_det_time = min_det_time) %>%
+                distinct()) %>%
     select(tag_code,
            first_node,
            first_det_date,
